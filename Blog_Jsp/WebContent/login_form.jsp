@@ -32,6 +32,19 @@
 </head>
 
 <body>
+<%
+	String savedId = "";
+	Cookie[] cooks = request.getCookies();
+	if(cooks !=null & cooks.length > 0) {
+		for(Cookie tmp:cooks) {
+			//쿠키의 이름이 "canPopup" 이라면
+			if(tmp.getName().equals("savedId")) {
+				//팝업창을 띄우지 않도록 설정
+				savedId = tmp.getValue();
+			}
+		}
+	}
+%>
 
 	<!-- Navigation -->
 	<%@include file="nav.jsp" %>
@@ -57,12 +70,13 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto">
 				<h3>Login</h3>
-				<form action="login.jsp" method="post">
+				<form action="login.jsp" method="post" id="loginForm">
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>ID</label> <input type="text" class="form-control"
 								placeholder="ID" id="id" required
-								data-validation-required-message="Please enter your ID correctly.">
+								data-validation-required-message="Please enter your ID correctly." name="id"
+								value = <%=savedId %>>
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
@@ -71,13 +85,13 @@
 							<label>Password</label> <input type="password"
 								class="form-control" placeholder="Password" id="pwd"
 								required
-								data-validation-required-message="Please enter your password correctly.">
+								data-validation-required-message="Please enter your password correctly." name="pwd" >
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<br />
 					<label>
-						<input type="checkbox" name="idSave" value="yes" /> save ID
+						<input type="checkbox" name="idSave" value="yes" <%if(savedId.length() > 0) {%> checked="checked" <%} %>/> save ID
 					</label>
 					<br />
 					<button class="btn btn-primary" type="submit">Login</button>
@@ -97,7 +111,17 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="js/clean-blog.min.js"></script>
-
+	
+	<script src="js/jquery.form.min.js"></script>
+	<script>
+		$("#loginForm").ajaxForm(function(response){
+			if(response.isLoginSuccess) {
+				location.href="index.jsp";
+			} else {
+				alert("Please check ID and password.");	
+			}
+		})
+	</script>
 </body>
 
 </html>

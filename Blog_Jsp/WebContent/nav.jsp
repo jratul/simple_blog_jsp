@@ -20,9 +20,21 @@
 				<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact</a>
 				</li>
 				<li style="color: white">|</li>
+				<%if((String)session.getAttribute("id") == null) { %>
 				<li class="nav-item"><a class="nav-link" href="login_form.jsp">Login</a></li>
-				<li class="nav-item"><a class="nav-link" href="">Join</a></li>
+				<%} else { %>
+				<li class="nav-item"><a class="nav-link" href="javascript:doLogout()">Logout</a></li>
+				<li class="nav-item"><a class="nav-link" href="login_form.jsp">MyPage</a></li>
+				<%} %>
+				<li class="nav-item"><a class="nav-link" href="join_form.jsp">Join</a></li>
 			</ul>
 		</div>
 	</div>
 </nav>
+<script>
+	function doLogout() {
+		<%session.invalidate();%>
+		alert("See you later!");
+		location.reload();
+	}
+</script>

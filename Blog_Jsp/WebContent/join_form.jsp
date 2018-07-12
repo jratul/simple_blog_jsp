@@ -57,12 +57,12 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto">
 				<h3>Join us</h3>
-				<form action="join.jsp" method="post">
+				<form action="join.jsp" method="post" id="joinForm">
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>ID</label> <input type="text" class="form-control"
 								placeholder="ID" id="id" required
-								data-validation-required-message="Please enter your ID correctly.">
+								data-validation-required-message="Please enter your ID correctly." name="id">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
@@ -71,7 +71,7 @@
 							<label>Password</label> <input type="password"
 								class="form-control" placeholder="Password" id="pwd"
 								required
-								data-validation-required-message="Please enter your password correctly.">
+								data-validation-required-message="Please enter your password correctly." name="pwd">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
@@ -89,7 +89,7 @@
 							<label>Email</label> <input type="email"
 								class="form-control" placeholder="Email" id="email"
 								required
-								data-validation-required-message="Please enter your email correctly.">
+								data-validation-required-message="Please enter your email correctly." name="email">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
@@ -111,7 +111,18 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="js/clean-blog.min.js"></script>
-
+	
+	<script src="js/jquery.form.min.js"></script>
+	<script>
+		$("#joinForm").ajaxForm(function(response){
+			if(response.isJoinSuccess) {
+				alert("Thank you for joining us");
+				location.href="index.jsp";
+			} else {
+				alert("Please check the form");
+			}
+		});
+	</script>
 </body>
 
 </html>
