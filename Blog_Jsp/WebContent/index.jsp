@@ -109,9 +109,8 @@
 			</div>
 		</div>
 	</div>
-
+	<div id="content"></div>
 	<hr>
-
 	<!-- Footer -->
 	<%@include file="footer.jsp" %>
 
@@ -121,6 +120,7 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="js/clean-blog.min.js"></script>
+
 </body>
 
 </html>

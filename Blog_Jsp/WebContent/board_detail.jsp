@@ -3,6 +3,11 @@
 <%@page import="com.simple.board.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	int num = Integer.parseInt(request.getParameter("num"));
+
+	BoardDto dto = BoardDao.getInstance().getData(num);
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,32 +69,32 @@
 			<div class=" col-sm-12 mx-auto">
 				<h3>Board</h3>
 				<hr />
-				<a class="btn btn-success" href="#">Write</a> 
-				<br /><br />
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th style="width: 10%">#</th>
-							<th style="width: 50%">Title</th>
-							<th style="width: 10%">Writer</th>
-							<th style="width: 30%">Reg. Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%
-							for (BoardDto tmp : list) {
-						%>
-						<tr>
-							<td><%=tmp.getNum()%></td>
-							<td><a href="board_detail.jsp?num=<%=tmp.getNum()%>"><%=tmp.getTitle()%></a></td>
-							<td><%=tmp.getWriter()%></td>
-							<td><%=tmp.getRegDate()%></td>
-						</tr>
-						<%
-							}
-						%>
-					</tbody>
+				<table class="table table-bordered">
+					<tr>
+						<th style="width: 10%">#</th>
+						<td><%=dto.getNum()%></td>
+					</tr>
+					<tr>
+						<th>Writer</th>
+						<td><%=dto.getWriter()%></td>
+					</tr>
+					<tr>
+						<th>Title</th>
+						<td><%=dto.getTitle()%></td>
+					</tr>
+					<tr>
+						<th>Content</th>
+						<td><textarea cols="130" rows="10" disabled
+								class="form-control"><%=dto.getContent()%></textarea></td>
+					</tr>
+					<tr>
+						<th>Reg. Date</th>
+						<td><%=dto.getRegDate()%></td>
+					</tr>
 				</table>
+				<a href="board.jsp" class="btn btn-primary">List</a> 
+				<a href="updateform.jsp?num=<%=dto.getNum()%>" class="btn btn-success">Modify</a> 
+				<a href="javascript: deleteCheck();" class="btn btn-danger">Delete</a>
 			</div>
 		</div>
 	</div>

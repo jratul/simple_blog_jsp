@@ -38,19 +38,15 @@ public class LoginFilter implements Filter{ //1.
 		String cPath = request.getContextPath();
 		//현재 요청된 url 정보를 읽어온다.(원래 이동하려던 목적지)
 		String url = request.getRequestURI();
-		System.out.println("url : " + url);
 		//세션 객체를 얻어와서
 		HttpSession session = request.getSession();
 		//id가 저장되어 있는지 읽어와 본다.
 		String id = (String) session.getAttribute("id");
-		System.out.println("session id : " + id);
 		if(id==null) {	//로그인하지 않았으면
 			//로그인의 페이지로 이동하라고 리다이렉트 응답을 준다.
-			System.out.println("session null");
 			response.sendRedirect(cPath + "/login_form.jsp?url=" + url);
 		} else {
 			//요청의 흐름 계속 진행시키기
-			System.out.println("session ok");
 			chain.doFilter(req, res);
 		}
 	}
