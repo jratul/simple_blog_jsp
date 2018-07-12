@@ -33,8 +33,11 @@
 </nav>
 <script>
 	function doLogout() {
-		<%session.invalidate();%>
 		alert("See you later!");
-		location.reload();
+		$.ajax({
+			url: "logout.jsp",
+			success: function() {}
+		});
+		location.href = "index.jsp";
 	}
 </script>

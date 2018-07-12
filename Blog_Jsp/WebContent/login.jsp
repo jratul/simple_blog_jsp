@@ -18,7 +18,6 @@
 		//로그인 처리하기
 		session.setAttribute("id", id);
 		if(idSave != null) {
-			System.out.println("idsave : " + idSave);
 			//savedId라는 쿠키 이름으로 id 저장하기
 			Cookie cook = new Cookie("savedId", id);
 			cook.setMaxAge(86400);
