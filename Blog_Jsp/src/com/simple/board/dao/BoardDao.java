@@ -29,7 +29,7 @@ public class BoardDao {
 
 		try {
 			conn = new DbcpBean().getConn();
-			String sql = "SELECT writer, title, content, regDate "
+			String sql = "SELECT writer, title, content, TO_CHAR(regdate, 'YYYY.MM.DD AM HH:MI:SS') regDate "
 					+ "FROM board_guest "
 					+ "WHERE num = ? ";
 			pstmt = conn.prepareStatement(sql);
@@ -68,7 +68,7 @@ public class BoardDao {
 
 		try {
 			conn = new DbcpBean().getConn();
-			String sql = "SELECT num, writer, title, content, regDate "
+			String sql = "SELECT num, writer, title, content, TO_CHAR(regdate, 'YYYY.MM.DD AM HH:MI:SS') regDate "
 					+ "FROM board_guest "
 					+ "ORDER BY num DESC";
 			pstmt = conn.prepareStatement(sql);
@@ -98,5 +98,71 @@ public class BoardDao {
 		}
 
 		return list;
+	}
+	
+	public boolean insert(BoardDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성하기
+			String sql = "INSERT INTO board_guest (num, writer, title, content, regdate) "
+						+ "VALUES(board_guest_seq.NEXTVAL, ?, ?, ?, SYSDATE)";
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩할 내용 결정하기 
+			pstmt.setString(1, dto.getWriter());
+			pstmt.setString(2, dto.getTitle());
+			pstmt.setString(3, dto.getContent());
+
+			flag = pstmt.executeUpdate();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean delete(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성하기
+			String sql = "DELETE FROM board_guest "
+					+ "WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩할 내용 결정하기
+			pstmt.setInt(1, num);
+
+			flag = pstmt.executeUpdate();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

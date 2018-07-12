@@ -3,11 +3,6 @@
 <%@page import="com.simple.board.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	int num = Integer.parseInt(request.getParameter("num"));
-
-	BoardDto dto = BoardDao.getInstance().getData(num);
-%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,10 +35,6 @@
 </head>
 
 <body>
-	<%
-		List<BoardDto> list = BoardDao.getInstance().getList();
-	%>
-
 	<!-- Navigation -->
 	<%@include file="nav.jsp"%>
 
@@ -69,32 +60,37 @@
 			<div class=" col-sm-12 mx-auto">
 				<h3>Board</h3>
 				<hr />
-				<table class="table table-bordered">
-					<tr>
-						<th style="width: 10%">#</th>
-						<td><%=dto.getNum()%></td>
-					</tr>
-					<tr>
-						<th>Writer</th>
-						<td><%=dto.getWriter()%></td>
-					</tr>
-					<tr>
-						<th>Title</th>
-						<td><%=dto.getTitle()%></td>
-					</tr>
-					<tr>
-						<th>Content</th>
-						<td><textarea cols="130" rows="10" disabled
-								class="form-control"><%=dto.getContent()%></textarea></td>
-					</tr>
-					<tr>
-						<th>Reg. Date</th>
-						<td><%=dto.getRegDate()%></td>
-					</tr>
-				</table>
-				<a href="board.jsp" class="btn btn-primary">List</a> 
-				<a href="updateform.jsp?num=<%=dto.getNum()%>" class="btn btn-success">Modify</a> 
-				<a href="javascript: deleteCheck(<%=dto.getNum() %>);" class="btn btn-danger">Delete</a>
+				<form action="board/insert.jsp" method="post" id="boardInsertForm">
+					<input type="hidden" name="writer" value="<%=(String) session.getAttribute("id")%>"/>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>Writer</label> <input type="text" class="form-control"
+								placeholder="Writer" id="writer" required
+								data-validation-required-message="Please enter your ID correctly."
+								value="<%=(String) session.getAttribute("id")%>" disabled= "disabled">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>Title</label> <input type="text"
+								class="form-control" placeholder="Title" id="title" required
+								data-validation-required-message="Please enter title correctly."
+								name="title">
+							<p class="help-block text-danger"></p>
+						</div>
+						<div class="form-group floating-label-form-group controls">
+							<label>Content</label> <textarea
+								class="form-control" placeholder="Content" id="content" required
+								data-validation-required-message="Please enter content correctly."
+								name="content" cols="130" rows="10"></textarea>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<br />
+					<button class="btn btn-success" type="submit">Write</button>
+					<a href="board.jsp" class="btn btn btn-danger">Cancel</a>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -110,26 +106,15 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="js/clean-blog.min.js"></script>
+	<script src="js/jquery.form.min.js"></script>
 	<script>
-		function deleteCheck(num) {
-			var isDelete = confirm("Do you really want to delete this post?");
-			if(isDelete) {
-				$.ajax({
-					url: "board/delete.jsp",
-					method: "post",
-					data: {"num" : num},
-					success: function(response) {
-						console.log(response);
-						if(response.isDeleteSuccess) {
-							alert("Complete to delete this post.");
-							location.href = "board.jsp";
-						} else {
-							alert("Fail to delete this post");
-						}
-					}
-				});
+		$("#boardInsertForm").ajaxForm(function(response){
+			if(response.isInsertSuccess) {
+				location.href="board.jsp";
+			} else {
+				alert("fail to write this post");
 			}
-		}
+		});
 	</script>
 </body>
 

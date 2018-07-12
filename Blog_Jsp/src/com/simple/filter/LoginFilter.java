@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * 1. Filter 인터페이스를 구현한다.
  * 2. Filter의 동작을 맵핑한다.
  */
-@WebFilter({"/about.jsp", "/contact.jsp", "/post.jsp", "/mypage.jsp", "/board.jsp", "/files.jsp"})	//2.
+@WebFilter({"/about.jsp", "/contact.jsp", "/post.jsp", "/mypage.jsp", "/board.jsp", "/files.jsp", "/board_detail.jsp", "/board_insert_form.jsp"})	//2.
 public class LoginFilter implements Filter{ //1.
 
 	@Override

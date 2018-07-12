@@ -64,7 +64,7 @@
 			<div class=" col-sm-12 mx-auto">
 				<h3>Board</h3>
 				<hr />
-				<a class="btn btn-success" href="#">Write</a> 
+				<a class="btn btn-success" href="board_insert_form.jsp">Write</a> 
 				<br /><br />
 				<table class="table table-striped">
 					<thead>
