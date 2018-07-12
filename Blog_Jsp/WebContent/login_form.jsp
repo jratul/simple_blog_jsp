@@ -44,6 +44,10 @@
 			}
 		}
 	}
+	String url = request.getParameter("url");
+	if(url == null) {
+		url = request.getContextPath() + "/";
+	}
 %>
 
 	<!-- Navigation -->
@@ -95,6 +99,7 @@
 					</label>
 					<br />
 					<button class="btn btn-primary" type="submit">Login</button>
+					<a href="join_form.jsp" class="btn btn-success">Join</a>
 				</form>
 			</div>
 		</div>
@@ -116,7 +121,7 @@
 	<script>
 		$("#loginForm").ajaxForm(function(response){
 			if(response.isLoginSuccess) {
-				location.href="index.jsp";
+				location.href="<%=url%>";
 			} else {
 				alert("Please check ID and password.");	
 			}

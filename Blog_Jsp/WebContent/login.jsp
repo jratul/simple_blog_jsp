@@ -6,7 +6,7 @@
 	//ajax 요청 파라미터 추출
 	String id = request.getParameter("id");
 	String pwd = request.getParameter("pwd");
-	String isSave = request.getParameter("isSave");
+	String idSave = request.getParameter("idSave");
 	
 	//유효한 정보인지 확인
 	UsersDto dto = new UsersDto();
@@ -17,10 +17,11 @@
 	if(isLoginSuccess) {
 		//로그인 처리하기
 		session.setAttribute("id", id);
-		if(isSave != null) {
+		if(idSave != null) {
+			System.out.println("idsave : " + idSave);
 			//savedId라는 쿠키 이름으로 id 저장하기
 			Cookie cook = new Cookie("savedId", id);
-			cook.setMaxAge(60);
+			cook.setMaxAge(86400);
 			response.addCookie(cook);
 		}
 	}

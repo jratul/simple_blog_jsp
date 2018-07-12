@@ -22,11 +22,11 @@
 				<li style="color: white">|</li>
 				<%if((String)session.getAttribute("id") == null) { %>
 				<li class="nav-item"><a class="nav-link" href="login_form.jsp">Login</a></li>
+				<li class="nav-item"><a class="nav-link" href="join_form.jsp">Join</a></li>
 				<%} else { %>
 				<li class="nav-item"><a class="nav-link" href="javascript:doLogout()">Logout</a></li>
-				<li class="nav-item"><a class="nav-link" href="login_form.jsp">MyPage</a></li>
+				<li class="nav-item"><a class="nav-link" href="login_form.jsp">MyPage(<u class="text-warning"><%= (String)session.getAttribute("id")%></u>)</a></li>
 				<%} %>
-				<li class="nav-item"><a class="nav-link" href="join_form.jsp">Join</a></li>
 			</ul>
 		</div>
 	</div>
