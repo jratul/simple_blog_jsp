@@ -121,4 +121,73 @@ public class UsersDao {
 
 		return canUse;
 	}
+	
+	public UsersDto getData(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UsersDto dto = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "SELECT id, pwd, email, TO_CHAR(regDate, 'YYYY.MM.DD AM HH:MI:SS') regDate "
+					+ "FROM users "
+					+ "WHERE id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto = new UsersDto();
+				dto.setId(rs.getString("id"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setEmail(rs.getString("email"));
+				dto.setRegDate(rs.getString("regDate"));
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return dto;
+	}
+	
+	public boolean delete(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성하기
+			String sql = "DELETE FROM users WHERE id = ?";
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩할 내용 결정하기 
+			pstmt.setString(1, id);
+			flag = pstmt.executeUpdate();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

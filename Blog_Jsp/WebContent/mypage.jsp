@@ -1,5 +1,12 @@
+<%@page import="com.simple.users.dao.UsersDao"%>
+<%@page import="com.simple.users.dto.UsersDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<% 
+	String id = (String) session.getAttribute("id");
+	
+	UsersDto dto = UsersDao.getInstance().getData(id);
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +18,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Simple Blog - Login</title>
+<title>Simple Blog - MyPage <%if(id!=null) {%>- <%=id %><%} %></title>
 
 <!-- Bootstrap core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -32,23 +39,6 @@
 </head>
 
 <body>
-<%
-	String savedId = "";
-	Cookie[] cooks = request.getCookies();
-	if(cooks !=null & cooks.length > 0) {
-		for(Cookie tmp:cooks) {
-			//쿠키의 이름이 "canPopup" 이라면
-			if(tmp.getName().equals("savedId")) {
-				//팝업창을 띄우지 않도록 설정
-				savedId = tmp.getValue();
-			}
-		}
-	}
-	String url = request.getParameter("url");
-	if(url == null) {
-		url = request.getContextPath() + "/";
-	}
-%>
 
 	<!-- Navigation -->
 	<%@include file="nav.jsp" %>
@@ -73,34 +63,23 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 mx-auto">
-				<h3>Login</h3>
-				<form action="login.jsp" method="post" id="loginForm">
-					<div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>ID</label> <input type="text" class="form-control"
-								placeholder="ID" id="id" required
-								data-validation-required-message="Please enter your ID correctly." name="id"
-								value = <%=savedId %>>
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>Password</label> <input type="password"
-								class="form-control" placeholder="Password" id="pwd"
-								required
-								data-validation-required-message="Please enter your password correctly." name="pwd" >
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<br />
-					<label>
-						<input type="checkbox" name="idSave" value="yes" <%if(savedId.length() > 0) {%> checked="checked" <%} %>/> save ID
-					</label>
-					<br />
-					<button class="btn btn-primary" type="submit">Login</button>
-					<a href="join_form.jsp" class="btn btn-success">Join</a>
-				</form>
+				<h3>My Page<%if(id!=null) { %> - <%=id %><%} %></h3>
+				<table class="table table-bordered">
+					<tr>
+						<td>ID</td>
+						<td><%=dto.getId() %></td>
+					</tr>
+					<tr>
+						<td>Email</td>
+						<td><%=dto.getPwd() %></td>
+					</tr>
+					<tr>
+						<td>Reg. Date</td>
+						<td><%=dto.getRegDate() %></td>
+					</tr>
+				</table>
+				<a href="" class="btn btn-success">Modify info</a>
+				<a href="javascript:deleteId()" class="btn btn-danger">Delete Account</a>
 			</div>
 		</div>
 	</div>
@@ -116,16 +95,24 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="js/clean-blog.min.js"></script>
-	
 	<script src="js/jquery.form.min.js"></script>
 	<script>
-		$("#loginForm").ajaxForm(function(response){
-			if(response.isLoginSuccess) {
-				location.href="<%=url%>";
-			} else {
-				alert("Please check ID and password.");	
+		function deleteId() {
+			var willDelete = confirm("Do you really want to delete your account?");
+			if(willDelete) {
+				$.ajax({
+					url: "users/delete.jsp",
+					success: function(response) {
+						if(response.isDeleteSuccess) {
+							alert("Complete to delete your account");
+							location.href = "index.jsp";
+						} else {
+							alert("Fail to delete your account");
+						}
+					}
+				});
 			}
-		});
+		}
 	</script>
 </body>
 
