@@ -19,6 +19,8 @@
 						Post</a></li>
 				<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact</a>
 				</li>
+				<li class="nav-item"><a href="board.jsp" class="nav-link">Board</a></li>
+				<li class="nav-item"><a href="files.jsp" class="nav-link">Files</a></li>
 				<li style="color: white">|</li>
 				<%if((String)session.getAttribute("id") == null) { %>
 				<li class="nav-item"><a class="nav-link" href="login_form.jsp">Login</a></li>

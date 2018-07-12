@@ -64,6 +64,7 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto">
 				<h3>My Page<%if(id!=null) { %> - <%=id %><%} %></h3>
+				<hr />
 				<form action="users/update.jsp" method="post" id="updateForm">
 					<input type="hidden" name="id" value="<%=dto.getId() %>" />
 					<input type="hidden" name="regDate" value="<%=dto.getRegDate() %>" />

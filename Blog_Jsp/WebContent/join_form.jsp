@@ -57,6 +57,7 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto">
 				<h3>Join us</h3>
+				<hr />
 				<form action="join.jsp" method="post" id="joinForm">
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">

@@ -74,6 +74,7 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto">
 				<h3>Login</h3>
+				<hr />
 				<form action="login.jsp" method="post" id="loginForm">
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
