@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
+	String id = (String) session.getAttribute("id");
 	int num = Integer.parseInt(request.getParameter("num"));
 
 	BoardDto dto = BoardDao.getInstance().getData(num);
@@ -40,9 +41,6 @@
 </head>
 
 <body>
-	<%
-		List<BoardDto> list = BoardDao.getInstance().getList();
-	%>
 
 	<!-- Navigation -->
 	<%@include file="nav.jsp"%>
@@ -93,8 +91,10 @@
 					</tr>
 				</table>
 				<a href="board.jsp" class="btn btn-primary">List</a> 
-				<a href="updateform.jsp?num=<%=dto.getNum()%>" class="btn btn-success">Modify</a> 
+				<%if(id!=null && dto.getWriter() != null && id.equals(dto.getWriter())) { %>
+				<a href="board_update_form.jsp?num=<%=dto.getNum()%>" class="btn btn-success">Modify</a> 
 				<a href="javascript: deleteCheck(<%=dto.getNum() %>);" class="btn btn-danger">Delete</a>
+				<%} %>
 			</div>
 		</div>
 	</div>

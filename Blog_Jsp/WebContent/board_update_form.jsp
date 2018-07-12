@@ -3,6 +3,11 @@
 <%@page import="com.simple.board.dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	int num = Integer.parseInt(request.getParameter("num"));
+
+	BoardDto dto = BoardDao.getInstance().getData(num);
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,9 +63,10 @@
 	<div class="container">
 		<div class="row">
 			<div class=" col-sm-12 mx-auto">
-				<h3>Board - Insert</h3>
+				<h3>Board - Modify</h3>
 				<hr />
-				<form action="board/insert.jsp" method="post" id="boardInsertForm">
+				<form action="board/update.jsp" method="post" id="boardUpdateForm">
+					<input type="hidden" name="num" value="<%=num %>" />
 					<input type="hidden" name="writer" value="<%=(String) session.getAttribute("id")%>"/>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
@@ -76,20 +82,20 @@
 							<label>Title</label> <input type="text"
 								class="form-control" placeholder="Title" id="title" required
 								data-validation-required-message="Please enter title correctly."
-								name="title">
+								name="title" value="<%=dto.getTitle()%>">
 							<p class="help-block text-danger"></p>
 						</div>
 						<div class="form-group floating-label-form-group controls">
 							<label>Content</label> <textarea
 								class="form-control" placeholder="Content" id="content" required
 								data-validation-required-message="Please enter content correctly."
-								name="content" cols="130" rows="10"></textarea>
+								name="content" cols="130" rows="10" ><%=dto.getContent()%></textarea>
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<br />
-					<button class="btn btn-success" type="submit">Write</button>
-					<a href="board.jsp" class="btn btn btn-danger">Cancel</a>
+					<button class="btn btn-success" type="submit">Modify</button>
+					<a href="board_detail.jsp?num=<%=dto.getNum() %>" class="btn btn btn-danger">Cancel</a>
 				</form>
 			</div>
 		</div>
@@ -108,11 +114,12 @@
 	<script src="js/clean-blog.min.js"></script>
 	<script src="js/jquery.form.min.js"></script>
 	<script>
-		$("#boardInsertForm").ajaxForm(function(response){
-			if(response.isInsertSuccess) {
-				location.href="board.jsp";
+		$("#boardUpdateForm").ajaxForm(function(response){
+			if(response.isUpdateSuccess) {
+				alert("Complete to update this post");
+				location.href="board_detail.jsp?num=<%=dto.getNum()%>";
 			} else {
-				alert("fail to write this post");
+				alert("fail to update this post");
 			}
 		});
 	</script>
