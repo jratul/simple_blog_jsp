@@ -64,22 +64,62 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto">
 				<h3>My Page<%if(id!=null) { %> - <%=id %><%} %></h3>
-				<table class="table table-bordered">
-					<tr>
-						<td>ID</td>
-						<td><%=dto.getId() %></td>
-					</tr>
-					<tr>
-						<td>Email</td>
-						<td><%=dto.getPwd() %></td>
-					</tr>
-					<tr>
-						<td>Reg. Date</td>
-						<td><%=dto.getRegDate() %></td>
-					</tr>
-				</table>
-				<a href="" class="btn btn-success">Modify info</a>
-				<a href="javascript:deleteId()" class="btn btn-danger">Delete Account</a>
+				<form action="users/update.jsp" method="post" id="updateForm">
+					<input type="hidden" name="id" value="<%=dto.getId() %>" />
+					<input type="hidden" name="regDate" value="<%=dto.getRegDate() %>" />
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>ID</label> <input type="text" class="form-control"
+								placeholder="ID" id="id" required
+								data-validation-required-message="Please enter your ID correctly."
+								value = <%=dto.getId() %> disabled="disabled">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>Password</label> <input type="password"
+								class="form-control" placeholder="Password" id="pwd"
+								required
+								data-validation-required-message="Please enter your password correctly." name="pwd" 
+								value = <%=dto.getPwd() %>>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>Confirm Password</label> <input type="password"
+								class="form-control" placeholder="Confirm Password" id="pwd2"
+								required
+								data-validation-required-message="Please enter your password correctly."
+								value = <%=dto.getPwd() %>>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>Email</label> <input type="email"
+								class="form-control" placeholder="Email" id="email"
+								required
+								data-validation-required-message="Please enter your email correctly." name="email"
+								value = <%=dto.getEmail() %>>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>Reg. Date</label> <input type="text"
+								class="form-control" placeholder="Reg. Date" id="regDate"
+								required
+								data-validation-required-message="Please enter your email correctly." disabled = "disabled"
+								value = <%=dto.getRegDate() %>>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<br />
+					<button class="btn btn-success" type="submit">Modify Info</button>
+					<a href="javascript:deleteId()" class="btn btn-danger">Delete Account</a>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -97,6 +137,15 @@
 	<script src="js/clean-blog.min.js"></script>
 	<script src="js/jquery.form.min.js"></script>
 	<script>
+		$("#updateForm").ajaxForm(function(response){
+			if(response.isUpdateSuccess) {
+				alert("Complete to update info");
+			} else {
+				alert("Fail to update info");
+			}
+			location.reload();
+		});
+	
 		function deleteId() {
 			var willDelete = confirm("Do you really want to delete your account?");
 			if(willDelete) {
