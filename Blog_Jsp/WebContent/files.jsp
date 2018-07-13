@@ -92,7 +92,9 @@
 			<div class=" col-sm-12 mx-auto">
 				<h3>Files</h3>
 				<hr />
+				<%if(!id.equals("")) { %>
 				<a class="btn btn-success" href="files_upload_form.jsp">Upload</a> <br />
+				<%} %>
 				<br />
 				<table class="table table-bordered">
 					<colgroup>
@@ -132,7 +134,7 @@
 									<br />
 									<%=dto.getOrgFileName()%>(<%=dto.getFileSize() %> Bytes) <br />
 									Downloads : <%=dto.getDownCount() %> <br />
-									<a href="" class="btn btn btn-primary">Download</a>
+									<a href="files/download.jsp?num=<%=dto.getNum() %>" onclick="javascript:reloadList()" class="btn btn btn-primary">Download</a>
 									<%if(id.equals(dto.getWriter())) { %>
 									<br /><br />
 									<a href="" class="btn btn btn-info">Modify</a>
@@ -166,6 +168,14 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="js/clean-blog.min.js"></script>
+	<script>
+		function reloadList() {
+			setTimeout(function() {
+				window.location.reload();
+			}, 100);
+		}
+		
+	</script>
 </body>
 
 </html>

@@ -21,7 +21,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebFilter({"/about.jsp", "/contact.jsp", "/post.jsp", "/mypage.jsp", 
 	"/board.jsp", "/files.jsp", "/board_detail.jsp", "/board_insert_form.jsp"
-	,"/files.jsp", "/files_upload_form.jsp"})	//2.
+	,"/files.jsp", "/files_upload_form.jsp",
+	"/board/*", "/files/*", "/users/*"})	//2.
 public class LoginFilter implements Filter{ //1.
 
 	@Override
