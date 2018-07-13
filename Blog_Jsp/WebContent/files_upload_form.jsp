@@ -133,7 +133,7 @@
 			} else {
 				alert("Fail to upload this file.");
 			}
-		})
+		});
 	</script>
 </body>
 
