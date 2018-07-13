@@ -1,3 +1,7 @@
+<%@page import="java.util.regex.Matcher"%>
+<%@page import="java.util.regex.Pattern"%>
+<%@page import="com.simple.files.dao.FilesDao"%>
+<%@page import="com.simple.files.dto.FilesDto"%>
 <%@page import="com.simple.board.dto.BoardDto"%>
 <%@page import="java.util.List"%>
 <%@page import="com.simple.board.dao.BoardDao"%>
@@ -16,6 +20,9 @@
 
 <title>Simple Blog - Files</title>
 
+<script src="js/jquery-3.3.1.js"></script>
+<script src="js/gallery.js"></script>
+
 <!-- Bootstrap core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -32,9 +39,34 @@
 <!-- Custom styles for this template -->
 <link href="css/clean-blog.min.css" rel="stylesheet">
 
+<style>
+	.td-img {
+		width: 200px;
+		height: 200px;
+	}
+	.td-thumb {
+		cursor: pointer;
+	}
+	.td-thumb:hover {
+		transform: scale(1.05);
+		transition: transform 0.4s ease-out;
+	} 
+</style>
+
 </head>
 
 <body>
+	<%
+		List<FilesDto> list = FilesDao.getInstance().getList();
+
+		int numOfFiles = list.size();
+
+		String cPath = request.getContextPath();
+		String id = (String) session.getAttribute("id");
+		if (id == null) {
+			id = "";
+		}
+	%>
 	<!-- Navigation -->
 	<%@include file="nav.jsp"%>
 
@@ -60,9 +92,65 @@
 			<div class=" col-sm-12 mx-auto">
 				<h3>Files</h3>
 				<hr />
-				<a class="btn btn-success" href="files_upload_form.jsp">Upload</a> 
-				<br /><br />
-				
+				<a class="btn btn-success" href="files_upload_form.jsp">Upload</a> <br />
+				<br />
+				<table class="table table-bordered">
+					<colgroup>
+						<col width="33%" />
+						<col width="33%" />
+						<col width="33%" />
+					</colgroup>
+
+					<%
+						for (int i = 0; i < Math.ceil(numOfFiles / 3.0); i++) {
+					%>
+					<tr>
+						<%
+							for (int j = 0; j < 3; j++) {
+						%>
+						<td style="position: relative;">
+							<%
+								if (i * 3 + j < numOfFiles) {
+									FilesDto dto = list.get(i * 3 + j);
+							%> <center><strong class="title"><%=dto.getTitle()%></strong></center><br />
+							<center>
+								<% 
+								Pattern p = Pattern.compile("\\.(jpg|jpeg|png|gif)$", Pattern.CASE_INSENSITIVE);
+								Matcher m = p.matcher(dto.getSaveFileName());
+								if(m.find()) {
+								%>
+								<img src="<%=cPath%>/upload/<%=dto.getSaveFileName()%>"
+									class="img-responsive img-thumbnail td-img td-thumb" />
+								<%}else { %>
+								<img src="img/no-image.png" class="img-responsive img-thumbnail td-img"/>
+								<%} %>
+								<center>
+									<br />
+									<%=dto.getWriter()%>
+									<br />
+									<%=dto.getRegdate()%>
+									<br />
+									<%=dto.getOrgFileName()%>(<%=dto.getFileSize() %> Bytes) <br />
+									Downloads : <%=dto.getDownCount() %> <br />
+									<a href="" class="btn btn btn-primary">Download</a>
+									<%if(id.equals(dto.getWriter())) { %>
+									<br /><br />
+									<a href="" class="btn btn btn-info">Modify</a>
+									<button class="btn btn-danger td-btn"
+										onclick="javascript:deletePic(<%=dto.getNum()%>)">Delete</button>
+									<%} %>
+								<%
+									}
+								%>
+						</td>
+						<%
+							}
+						%>
+					</tr>
+					<%
+						}
+					%>
+				</table>
 			</div>
 		</div>
 	</div>
