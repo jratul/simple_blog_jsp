@@ -38,8 +38,9 @@
 		alert("See you later!");
 		$.ajax({
 			url: "logout.jsp",
-			success: function() {}
-		});
-		location.href = "index.jsp";
+			success: function() {
+				location.href = "index.jsp";
+			}
+		});	
 	}
 </script>

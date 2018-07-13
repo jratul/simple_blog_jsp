@@ -96,7 +96,7 @@
 				<a class="btn btn-success" href="files_upload_form.jsp">Upload</a> <br />
 				<%} %>
 				<br />
-				<table class="table table-bordered">
+				<table class="table table-striped">
 					<colgroup>
 						<col width="33%" />
 						<col width="33%" />
@@ -136,10 +136,8 @@
 									Downloads : <%=dto.getDownCount() %> <br />
 									<a href="files/download.jsp?num=<%=dto.getNum() %>" onclick="javascript:reloadList()" class="btn btn btn-primary">Download</a>
 									<%if(id.equals(dto.getWriter())) { %>
-									<br /><br />
-									<a href="" class="btn btn btn-info">Modify</a>
 									<button class="btn btn-danger td-btn"
-										onclick="javascript:deletePic(<%=dto.getNum()%>)">Delete</button>
+										onclick="javascript:deleteFile(<%=dto.getNum()%>)">Delete</button>
 									<%} %>
 								<%
 									}
@@ -168,11 +166,35 @@
 
 	<!-- Custom scripts for this template -->
 	<script src="js/clean-blog.min.js"></script>
+	<script src="js/jquery-3.3.1.js"></script>
 	<script>
 		function reloadList() {
 			setTimeout(function() {
 				window.location.reload();
 			}, 100);
+		}
+		
+		function deleteFile(num) {
+			var willDelete = confirm("Do you really want to delete this file?");
+			if(willDelete) {
+				$.ajax({
+					url: "files/delete.jsp",
+					method: "post",
+					data: {"num" : num},
+					success : function(response) {
+						if(response.isDeleteSuccess) {
+							alert("Complete to delete this file.");
+							location.reload();
+						} else {
+							alert("Fail to delete this file.");
+						}
+					},
+					
+					error: function(response) {
+						alert("Fail to delete this file");
+					}
+				})
+			}
 		}
 		
 	</script>
