@@ -58,7 +58,7 @@
 	<div class="container">
 		<div class="row">
 			<div class=" col-sm-12 mx-auto">
-				<h3>Board - Insert</h3>
+				<h3>Board - Write Post</h3>
 				<hr />
 				<form action="board/insert.jsp" method="post" id="boardInsertForm">
 					<input type="hidden" name="writer" value="<%=(String) session.getAttribute("id")%>"/>
